@@ -1,0 +1,17 @@
+{
+    "apps": [
+      {
+        "serverURL": "http://localhost:1337/parse",
+        "appId": "WF_Tracker",
+        "masterKey": "1337",
+        "appName": "WF Tracker"
+      }
+    ],
+    "users": [
+      {
+        "user": "admin",
+        "pass": "admin"
+      }
+    ]
+  }
+  

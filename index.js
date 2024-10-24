@@ -1,8 +1,6 @@
-// Example express application adding the parse-server module to expose Parse
-// compatible API routes.
-
 import express from 'express';
 import { ParseServer } from 'parse-server';
+import ParseDashboard from 'parse-dashboard'; // Correctly import ParseDashboard
 import path from 'path';
 const __dirname = path.resolve();
 import http from 'http';
@@ -18,14 +16,31 @@ export const config = {
     classNames: ['Posts', 'Comments'], // List of classes to support for query subscriptions
   },
 };
-// Client-keys like the javascript key or the .NET key are not necessary with parse-server
-// If you wish you require them, you can set them as options in the initialization above:
-// javascriptKey, restAPIKey, dotNetKey, clientKey
 
-
-
+// Dashboard configuration
+const dashboardConfig = {
+  apps: [
+    {
+      serverURL: config.serverURL,
+      appId: config.appId,
+      masterKey: config.masterKey,
+      appName: 'WF Tracker', // App name displayed on the dashboard
+    },
+  ],
+  users: [
+    {
+      user: process.env.DASHBOARD_USER || 'admin', // Default username
+      pass: process.env.DASHBOARD_PASS || 'admin', // Default password
+    },
+  ],
+  useEncryptedPasswords: false, // For demonstration purposes, avoid in production
+};
 
 export const app = express();
+
+// Mount the Parse Dashboard
+const dashboard = new ParseDashboard(dashboardConfig, { allowInsecureHTTP: true });
+app.use('/dashboard', dashboard);
 
 app.set('trust proxy', true);
 
@@ -45,8 +60,7 @@ app.get('/', function (req, res) {
   res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
 });
 
-// There will be a test page available on the /test path of your server url
-// Remove this before launching your app
+// Test page route
 app.get('/test', function (req, res) {
   res.sendFile(path.join(__dirname, '/public/test.html'));
 });

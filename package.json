@@ -23,6 +23,7 @@
     "axios": "1.7.7",
     "express": "4.21.1",
     "parse": "5.3.0",
+    "parse-dashboard": "^5.4.0",
     "parse-server": "7.3.0"
   },
   "type": "module",
